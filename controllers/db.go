@@ -67,10 +67,8 @@ func (db Database) CheckTable(dbName string) (err error) {
 
 	row := conn.QueryRow(testQ)
 	// _, err = conn.Exec(testQ)
-	// fmt.Println("my error", err)
 	returnRow := ""
 	err = row.Scan(&returnRow)
-	fmt.Println(err)
 	if err != nil {
 		st := fmt.Sprintf("CREATE Table %s (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, Username VARCHAR(30) NOT NULL, Password VARCHAR(30) NOT NULL, Firstname VARCHAR(30) NOT NULL, Lastname VARCHAR(30) NOT NULL);", db.table)
 		stmt, err := conn.Prepare(st)
@@ -133,7 +131,6 @@ func (db Database) InsertUSER(user models.User) error {
 	defer conn.Close()
 
 	q := fmt.Sprintf(`INSERT INTO %s (Username, Password, Firstname, Lastname) VALUES ("%s", "%s", "%s", "%s")`, db.table, user.Username, user.Password, user.Firstname, user.Lastname)
-	// fmt.Println(q)
 	insert, err := conn.Query(q)
 	if err != nil {
 		return err
