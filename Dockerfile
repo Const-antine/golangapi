@@ -6,9 +6,9 @@ COPY ./ .
 
 RUN go get -d -v ./...
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/src/goapi/mainexec ./main/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/src/goapi/mainexec ./main
 
-RUN chmod +x /go/src/goapi/mainexec
+#RUN chmod +x /go/src/goapi/mainexec
 
 
 
@@ -18,5 +18,7 @@ ENV APP_BUILD_PATH="/var/app" \
     APP_BUILD_NAME="mainexec"
 WORKDIR ${APP_BUILD_PATH}
 COPY --from=gobuilder /go/src/goapi/mainexec /var/app/mainexec
-EXPOSE 8080
-CMD ["/var/app/mainexec"]
+#EXPOSE 8080
+#CMD ["/var/app/mainexec"]
+ENTRYPOINT ["/var/app/mainexec"]
+CMD ""

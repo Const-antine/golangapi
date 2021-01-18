@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql:5.5
+    container_name: ${MYSQL_CONTAINER_NAME_PREFIX}5.5
+    restart: always
+    ports: 
+      - '${DBPORT}:3306'
+    environment:
+      - MYSQL_DATABASE=${DBNAME}
+      - MYSQL_USER=${DBUSER}
+      - MYSQL_PASSWORD=${DBPASS}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+
+  web:
+    env_file:
+      - .env 
+    build: 
+        context: .
+        target: prod
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
