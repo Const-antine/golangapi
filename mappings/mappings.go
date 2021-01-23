@@ -4,6 +4,8 @@ import (
 	"goapi/controllers"
 
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 var Router *gin.Engine
@@ -11,6 +13,9 @@ var Router *gin.Engine
 func CreateUrlMappings() {
 	Router = gin.Default()
 	Router.Use(controllers.Cors())
+
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
+
 	// v1 of the API
 	v1 := Router.Group("/v1")
 	{
@@ -19,5 +24,9 @@ func CreateUrlMappings() {
 		// v1.POST("/login/", controllers.Login)
 		// v1.PUT("/users/:id", controllers.UpdateUser)
 		v1.POST("/users", controllers.PostUser)
+
+		// Swagger interface
+		// v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
+	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }

@@ -24,4 +24,4 @@ test:
 	eval $$(cat .env) go test ./...
 	@docker-compose down
 
-#cd ./app/http/ && docker run -t -i -p 8246:8080 -e SWAGGER_JSON=/var/specs/swagger.yaml  -v $PWD/docs:/var/specs swaggerapi/swagger-ui
+

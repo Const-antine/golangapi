@@ -5,12 +5,28 @@ import (
 	"log"
 	"os"
 
+	_ "goapi/docs"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 var DB *Database = InitDB(os.Getenv("DBUSER"), os.Getenv("DBPASS"), os.Getenv("DBHOST"), os.Getenv("DBPORT"), os.Getenv("DBNAME"), os.Getenv("DBTABLE"))
 
+//////////// GetUser godoc
+//////////// @Description Checks DB connection, creates a table if needed, retrieves a list of users
+//////////// Router /users/ [GET]
+//////////// Produce json
+////////////// Success 200 {object} []models.User
+
+// FindTodos godoc
+// @Summary Get all todos
+// @Description Get all todo items
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Success 200 {object} []models.User
+// @Router /users [get]
 func GetUser(c *gin.Context) {
 	var user []models.User
 
