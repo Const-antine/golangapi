@@ -1,5 +1,12 @@
 basePath: /v1
 definitions:
+  models.Err:
+    properties:
+      body:
+        type: object
+      severity:
+        type: string
+    type: object
   models.User:
     properties:
       firstname:
@@ -26,9 +33,7 @@ info:
 paths:
   /users:
     get:
-      consumes:
-      - application/json
-      description: Get all todo items
+      description: Fetches all available users from DB
       produces:
       - application/json
       responses:
@@ -38,7 +43,48 @@ paths:
             items:
               $ref: '#/definitions/models.User'
             type: array
-      summary: Get all todos
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Err'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Err'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Err'
+      summary: Get all users
       tags:
-      - todos
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Create/Add new user to DB via POST request
+      parameters:
+      - description: Specification for user which should be added
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Err'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Err'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Err'
+      summary: Create new user
+      tags:
+      - Users
 swagger: "2.0"

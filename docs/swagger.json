@@ -17,17 +17,14 @@
     "paths": {
         "/users": {
             "get": {
-                "description": "Get all todo items",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Fetches all available users from DB",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Users"
                 ],
-                "summary": "Get all todos",
+                "summary": "Get all users",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -37,12 +34,85 @@
                                 "$ref": "#/definitions/models.User"
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Err"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Err"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Err"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create/Add new user to DB via POST request",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create new user",
+                "parameters": [
+                    {
+                        "description": "Specification for user which should be added",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Err"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Err"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Err"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
+        "models.Err": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "object"
+                },
+                "severity": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "properties": {

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"goapi/models"
-	"log"
 	"os"
 
 	_ "goapi/docs"
@@ -11,21 +10,19 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var erro models.Err
+
 var DB *Database = InitDB(os.Getenv("DBUSER"), os.Getenv("DBPASS"), os.Getenv("DBHOST"), os.Getenv("DBPORT"), os.Getenv("DBNAME"), os.Getenv("DBTABLE"))
 
-//////////// GetUser godoc
-//////////// @Description Checks DB connection, creates a table if needed, retrieves a list of users
-//////////// Router /users/ [GET]
-//////////// Produce json
-////////////// Success 200 {object} []models.User
-
-// FindTodos godoc
-// @Summary Get all todos
-// @Description Get all todo items
-// @Tags todos
-// @Accept json
+// GetUSER godoc
+// @Summary Get all users
+// @Description Fetches all available users from DB
+// @Tags Users
 // @Produce json
 // @Success 200 {object} []models.User
+// @Failure 400 {object} models.Err
+// @Failure 404 {object} models.Err
+// @Failure 500 {object} models.Err
 // @Router /users [get]
 func GetUser(c *gin.Context) {
 	var user []models.User
@@ -34,32 +31,50 @@ func GetUser(c *gin.Context) {
 	_ = DB.CheckDB()
 	err := DB.CheckTable("test")
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Something wrong with DB"})
+		erro.Severity, erro.Body = "error", "Something wrong with DB"
+		c.JSON(500, erro)
 		return
 	}
 	err = DB.SelectAll(&user)
 	if err == nil {
 		if len(user) == 0 {
-			c.JSON(200, gin.H{"error": "no users registered yet"})
+			erro.Severity, erro.Body = "error", "no users registered yet"
+			c.JSON(200, erro)
 			return
 		}
 		c.JSON(200, user)
 	} else {
-		c.JSON(404, gin.H{"error": "user not found"})
+		erro.Severity, erro.Body = "error", "user not found"
+		c.JSON(404, erro)
 	}
 }
 
+// PostUser godoc
+// @Summary Create new user
+// @Description Create/Add new user to DB via POST request
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param users body models.User true "Specification for user which should be added"
+// @Success 200 {object} models.Err
+// @Failure 400 {object} models.Err
+// @Failure 404 {object} models.Err
+// @Router /users [post]
 func PostUser(c *gin.Context) {
 	var user models.User
 	c.Bind(&user)
-	log.Println(user)
 	if user.Username != "" && user.Password != "" && user.Firstname != "" && user.Lastname != "" {
 		err := DB.InsertUSER(user)
 		if err != nil {
-			c.JSON(400, gin.H{"error": err})
+			erro.Severity, erro.Body = "error", err
+			c.JSON(400, erro)
+		} else {
+			erro.Severity, erro.Body = "info", "User has been added."
+			c.JSON(200, erro)
 		}
 	} else {
-		c.JSON(400, gin.H{"error": "Fields are empty"})
+		erro.Severity, erro.Body = "error", "Fields are empty"
+		c.JSON(400, erro)
 	}
 }
 
@@ -70,10 +85,10 @@ func GetUserDetail(c *gin.Context) {
 	err := DB.GetUser(&user, id)
 
 	if err == nil {
-		// user.Id, _ = strconv.ParseInt(id, 0, 64)
 		c.JSON(200, user)
 	} else {
-		c.JSON(404, gin.H{"error": "user not found"})
+		erro.Severity, erro.Body = "error", "user not found"
+		c.JSON(404, erro)
 	}
 }
 

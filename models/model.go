@@ -7,3 +7,8 @@ type User struct {
 	Firstname string `db:"Firstname" json:"firstname"`
 	Lastname  string `db:"Lastname" json:"lastname"`
 }
+
+type Err struct {
+	Severity string      `json:"severity"`
+	Body     interface{} `json:"body"`
+}
