@@ -5,7 +5,7 @@ lint:
 .PHONY: build
 # build: lint docs
 build: lint
-	GOOS=linux CGO_ENABLED=0 go build -a -installsuffix cgo -o ./main/mainexec ./main
+	GOOS=linux CGO_ENABLED=0 go build -a -installsuffix cgo -o ./main/mainexec ./
 
 .PHONY: build-docker
 build-docker:
@@ -16,12 +16,12 @@ docker-image: build build-docker
 
 .PHONY: docs
 docs:
-	swag init --output ./main/docs --dir ./main  --generalInfo ./main/test.go
+	./swag_cli init .
 
 # Executes integration test using a local Docker Compose stack
-test:
+test: 
 	@docker-compose up -d
-	eval $$(cat .env) go test ./...
+	go test ./goapi_test.go
 	@docker-compose down
 
 

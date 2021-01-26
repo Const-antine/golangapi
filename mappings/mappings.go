@@ -21,12 +21,8 @@ func CreateUrlMappings() {
 	{
 		v1.GET("/users/:id", controllers.GetUserDetail)
 		v1.GET("/users/", controllers.GetUser)
-		// v1.POST("/login/", controllers.Login)
-		// v1.PUT("/users/:id", controllers.UpdateUser)
 		v1.POST("/users", controllers.PostUser)
-
-		// Swagger interface
-		// v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
+	// Swagger interface
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }

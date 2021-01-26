@@ -9,17 +9,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// var dbmap = initDb()
-
-// const Tab string = "user"
-
-// type Database struct {
-// 	host     string
-// 	user     string
-// 	password string
-// 	port     string
-// }
-
 type Database struct {
 	host     string
 	user     string
@@ -33,13 +22,11 @@ func InitDB(user string, password string, host string, port string, database str
 	return &Database{user: user, password: password, host: host, port: port, database: database, table: table}
 }
 
-// func (db Database) connString(dbName string) string {
 func (db Database) connString() string {
 	return fmt.Sprintf("%v:%v@tcp(%v:%v)/%s", db.user, db.password, db.host, db.port, db.database)
 }
 
 func (db Database) CheckDB() (err error) {
-	// conStr := db.connString("test")
 	conStr := db.connString()
 	conn, err := sql.Open("mysql", conStr)
 	if err != nil {
@@ -47,13 +34,10 @@ func (db Database) CheckDB() (err error) {
 	}
 	defer conn.Close()
 
-	// var i *sql.DB
-	// defer func() { _ = i.Close() }()
 	return conn.Ping()
 }
 
 func (db Database) CheckTable(dbName string) (err error) {
-	// conStr := db.connString("test")
 	conStr := db.connString()
 	conn, err := sql.Open("mysql", conStr)
 	if err != nil {
@@ -66,7 +50,6 @@ func (db Database) CheckTable(dbName string) (err error) {
 			AND table_name = "%s" LIMIT 1;`, dbName, db.table)
 
 	row := conn.QueryRow(testQ)
-	// _, err = conn.Exec(testQ)
 	returnRow := ""
 	err = row.Scan(&returnRow)
 	if err != nil {
@@ -85,17 +68,7 @@ func (db Database) CheckTable(dbName string) (err error) {
 	return nil
 }
 
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 	}
-// 	_, err = stmt.Exec()
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 	} else {
-// 		fmt.Println("Table created successfully..")
-
 func (db Database) SelectAll(targetUser *[]models.User) error {
-	// conStr := db.connString("test")
 	conStr := db.connString()
 	conn, err := sql.Open("mysql", conStr)
 	if err != nil {
@@ -114,7 +87,7 @@ func (db Database) SelectAll(targetUser *[]models.User) error {
 		var t models.User
 		err = rows.Scan(&t.Id, &t.Username, &t.Password, &t.Firstname, &t.Lastname)
 		if err != nil {
-			return err // proper error handling instead of panic in your app
+			return err
 		}
 		*targetUser = append(*targetUser, t)
 	}
@@ -122,7 +95,6 @@ func (db Database) SelectAll(targetUser *[]models.User) error {
 }
 
 func (db Database) InsertUSER(user models.User) error {
-	// conStr := db.connString("test")
 	conStr := db.connString()
 	conn, err := sql.Open("mysql", conStr)
 	if err != nil {
@@ -140,7 +112,6 @@ func (db Database) InsertUSER(user models.User) error {
 }
 
 func (db Database) GetUser(user *models.User, id string) error {
-	// conStr := db.connString("test")
 	conStr := db.connString()
 	conn, err := sql.Open("mysql", conStr)
 	if err != nil {
@@ -163,40 +134,3 @@ func Cors() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
-// func (db Database) InitDb(dbName string) error {
-// 	conStr := db.connString("test")
-// 	conn, err := sql.Open("mysql", conStr)
-// 	defer conn.Close()
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	_, err = conn.Exec("USE ?", dbName)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	createTable(conn)
-
-// 	return nil
-// }
-
-// func createTable(conn *sql.DB) {
-// 	stmt, err := conn.Prepare("CREATE Table user2(ID INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, Username VARCHAR(30) NOT NULL, Password VARCHAR(30) NOT NULL, Firstname VARCHAR(30) NOT NULL, Lastname VARCHAR(30) NOT NULL ;")
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 	}
-// 	_, err = stmt.Exec()
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 	} else {
-// 		fmt.Println("Table created successfully..")
-// 	}
-// }
-
-// func checkErr(err error, msg string) {
-// 	if err != nil {
-// 		log.Fatalln(msg, err)
-// 	}
-// }

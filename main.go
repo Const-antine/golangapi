@@ -5,7 +5,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	// _ "goapi/main/docs"
 	_ "goapi/docs"
 )
 
@@ -15,7 +14,7 @@ import (
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name Constantine Bond
-// @contact.email kostia.bond4444@gmail.com
+// @contact.email my.work.email@gmail.com
 
 // @license.name MIT
 
@@ -28,3 +27,4 @@ func main() {
 
 }
 
+// link to docs - https://github.com/swaggo/swag#how-to-use-it-with-gin
