@@ -58,9 +58,25 @@ $ make helm
 ```
 
 
+## Deployment steps for KinD
 
+```
+# creating KinD cluster (it's also possible to use custom config file here)
+$ kind create cluster
 
+# Fetching the repo
+$ git clone https://github.com/Const-antine/golangapi.git && cd golangapi
 
+# Fill up the .env file or use the pre-configured file 
+$ vim .env
 
+# Make sure that helm cli is installed & kubectl is configured, then
+$ make helm
 
+# Make the service accessible locally in the browser by port-forwarding
+$ kubectl port-forward service/golangapi-service  8080:8080
+
+# Feel free to visit http://localhost:8080/v1/users/ or http://localhost:8080/swagger/index.html
+
+```
 
