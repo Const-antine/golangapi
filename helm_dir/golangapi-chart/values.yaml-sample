@@ -1,0 +1,28 @@
+Dbuser: $DBUSER
+Dbpass: $DBPASS
+Dbport: $DBPORT
+Dbname: $DBNAME
+Dbtable: $DBTABLE
+image: "23251826/golangapi:latest"
+mysql:
+  auth:
+    database: $DBNAME
+    username: $DBUSER
+    password: $DBPASS
+    rootPassword: somestrongpass
+
+
+
+
+/Users/constantine/go/src/goapi
+kubectl port-forward service/golangapi-service  8080:8080 ( for KIND )
+eval $(egrep -v '^#' ../.env | xargs) helm install my-test-release helm_dir/golangapi-chart
+
+
+make helm
+
+# do not forget to update .env before proceeding to anything!
+
+
+http://localhost:8080/v1/users/
+http://localhost:8080/swagger/index.html#/Users/post_users

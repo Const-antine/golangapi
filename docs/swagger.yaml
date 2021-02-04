@@ -22,7 +22,7 @@ definitions:
     type: object
 info:
   contact:
-    email: kostia.bond4444@gmail.com
+    email: my.work.email@gmail.com
     name: Constantine Bond
   description: Swagger API for Golang API first project.
   license:

@@ -21,7 +21,7 @@ var doc = `{
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "Constantine Bond",
-            "email": "kostia.bond4444@gmail.com"
+            "email": "my.work.email@gmail.com"
         },
         "license": {
             "name": "MIT"

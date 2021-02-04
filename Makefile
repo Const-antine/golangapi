@@ -24,4 +24,7 @@ test:
 	go test ./goapi_test.go
 	@docker-compose down
 
+.PHONY: helm
+helm:
+	eval $(egrep -v '^#' .env | xargs)  envsubst < helm_dir/golangapi-chart/values.yaml-sample > helm_dir/golangapi-chart/values.yaml && helm install golangapi helm_dir/golangapi-chart
 
